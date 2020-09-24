@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "npm start --prefix=client",
     "server": "nodemon app.js",
-    "dev": "concurrently \"npm run client\" \"npm run server\""
+    "dev": "concurrently \"npm run client\" \"npm run server\"",
+    "create:component": "node ./tools/createComponent.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
     "mongoose": "^5.10.6"
   },
   "devDependencies": {
-    "concurrently": "^5.3.0"
+    "concurrently": "^5.3.0",
+    "fs": "0.0.1-security",
+    "prompts": "^2.3.2"
   }
 }
