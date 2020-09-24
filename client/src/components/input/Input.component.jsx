@@ -2,7 +2,15 @@ import React from "react";
 
 import "./Input.scss";
 
-const Input = ({ label, type, placeholder, value, onChange, id }) => {
+const Input = ({
+  label,
+  type,
+  placeholder,
+  value,
+  onChange,
+  id,
+  required = false,
+}) => {
   return (
     <div className="input">
       {label && (
@@ -11,6 +19,7 @@ const Input = ({ label, type, placeholder, value, onChange, id }) => {
         </label>
       )}
       <input
+        required={required}
         className="input__field"
         id={id}
         type={type}
