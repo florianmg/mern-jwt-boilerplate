@@ -1,1 +1,8 @@
 /node_modules
+/.idea/.gitignore
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/mern-jwt-boilerplate.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
