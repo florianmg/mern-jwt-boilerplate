@@ -18,7 +18,6 @@ const RegisterForm = () => {
 
   return (
     <div>
-      <h1>Login :</h1>
       <form onSubmit={handleFormSubmit}>
         <Input
           type="text"
