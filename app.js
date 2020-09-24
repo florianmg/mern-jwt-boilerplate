@@ -3,6 +3,8 @@ const app = express();
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
+const authRoutes = require("./routes/auth");
+
 app.use(cookieParser());
 app.use(express.json());
 
@@ -20,5 +22,7 @@ mongoose.connect(
 app.listen(5050, () => {
   console.log("✅ Server started");
 });
+
+app.use(authRoutes);
 
 module.exports = app;
