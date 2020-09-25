@@ -40,9 +40,11 @@ export async function login(formValues) {
  */
 export async function logout() {
   try {
-    const result = await API.get("/logout");
-    console.log(result);
-  } catch (e) {}
+    const result = await API.post("/logout");
+    return result;
+  } catch (err) {
+    console.log(err.response);
+  }
 }
 
 /**

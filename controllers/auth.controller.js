@@ -56,7 +56,9 @@ module.exports.register = async (req, res) => {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      maxAge: process.env.AGE_COOKIE,
+      path: process.env.COOKIE_PATH,
+      domain: process.env.COOKIE_DOMAIN,
+      maxAge: process.env.COOKIE_MAX_AGE,
     });
     res.status(201).json({ user: newUser._id });
   } catch (err) {
@@ -72,7 +74,12 @@ module.exports.login = async (req, res) => {
     const user = await User.login(email, password);
     const token = createToken(user._id);
 
-    res.cookie("jwt", token, { httpOnly: true, maxAge: process.env.AGE_JWT });
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      path: process.env.COOKIE_PATH,
+      domain: process.env.COOKIE_DOMAIN,
+      maxAge: process.env.COOKIE_MAX_AGE,
+    });
     res.status(200).json({ user: user._id });
   } catch (err) {
     const errors = handleErrors(err);
@@ -91,4 +98,14 @@ module.exports.isAuthenticated = async (req, res) => {
   } catch (e) {
     return res.status(401).json({ status: 401, message: e });
   }
+};
+
+module.exports.logout = (req, res) => {
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    path: process.env.COOKIE_PATH,
+    domain: process.env.COOKIE_DOMAIN,
+    maxAge: 1,
+  });
+  return res.status(200).json("User logged out");
 };

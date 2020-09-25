@@ -7,7 +7,14 @@ const authRoutes = require("./routes/auth.routes");
 require("dotenv").config();
 const corsConfig = { credentials: true, origin: process.env.FRONT_ENDPOINT };
 
-app.use(cookieParser());
+app.use(
+  cookieParser(process.env.COOKIE_SECRET, {
+    httpOnly: true,
+    domain: process.env.COOKIE_DOMAIN,
+    path: process.env.COOKIE_PATH,
+    maxAge: process.env.COOKIE_MAX_AGE,
+  })
+);
 app.use(express.json());
 app.use(cors(corsConfig));
 

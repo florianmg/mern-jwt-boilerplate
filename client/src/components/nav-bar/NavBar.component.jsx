@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import { ROUTES } from "../../constants";
-
+import { logout } from "../../utils/API";
 import "./NavBar.scss";
 
 const NavBar = () => {
@@ -12,16 +12,26 @@ const NavBar = () => {
   );
 };
 
-const handleLogout = () => {};
-
 const LoggedMenu = () => {
+  const { setAuth } = useContext(AuthContext);
+  const handleLogout = async () => {
+    try {
+      const result = await logout();
+      if (result.status === 200) return setAuth(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <ul>
       <li>
         <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
       </li>
       <li>
-        <p onClick={() => handleLogout()}>Logout</p>
+        <Link to={ROUTES.LANDING} onClick={() => handleLogout()}>
+          Logout
+        </Link>
       </li>
     </ul>
   );
