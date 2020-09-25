@@ -67,9 +67,10 @@ module.exports.register = async (req, res) => {
 
 module.exports.login = async (req, res) => {
   const { email, password } = req.body;
-  console.log("login");
+
   try {
     const user = await User.login(email, password);
+    console.log("user => ", user);
     const token = createToken(user._id);
 
     res.cookie("jwt", token, { httpOnly: true, maxAge: process.env.AGE_JWT });

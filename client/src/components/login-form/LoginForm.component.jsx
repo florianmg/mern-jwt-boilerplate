@@ -29,6 +29,7 @@ const LoginForm = () => {
     <div>
       <form onSubmit={handleFormSubmit}>
         {formErrors && <p>{formErrors.errors.email}</p>}
+        {formErrors && <p>{formErrors.errors.password}</p>}
         <Input
           type="text"
           value={formValues.email}
