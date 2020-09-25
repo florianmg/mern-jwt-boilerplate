@@ -70,7 +70,6 @@ module.exports.login = async (req, res) => {
 
   try {
     const user = await User.login(email, password);
-    console.log("user => ", user);
     const token = createToken(user._id);
 
     res.cookie("jwt", token, { httpOnly: true, maxAge: process.env.AGE_JWT });
@@ -78,5 +77,18 @@ module.exports.login = async (req, res) => {
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
+  }
+};
+
+module.exports.isAuthenticated = async (req, res) => {
+  const token = req.cookies.jwt;
+  try {
+    const verification = await jwt.verify(token, process.env.SECRET_JWT);
+    if (!verification) new Error("wrong token");
+    const user = await User.findById(verification.id);
+    if (!user) new Error("No user found");
+    return res.status(200).json({ user: user._id });
+  } catch (e) {
+    return res.status(401).json({ status: 401, message: e });
   }
 };

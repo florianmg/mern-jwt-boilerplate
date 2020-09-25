@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-
+import AuthContext from "./context/AuthContext";
 import { ROUTES } from "./constants";
+
 import Login from "./pages/login";
 import Register from "./pages/register";
 import Landing from "./pages/landing";
 import Dashboard from "./pages/dashboard";
-
-const simulateIsLogged = false;
 
 const Routes = () => {
   return (
@@ -21,31 +20,24 @@ const Routes = () => {
 };
 
 const RouteCredentials = ({ component: Component, ...rest }) => {
+  const { auth } = useContext(AuthContext);
   return (
     <Route
       {...rest}
       render={(props) =>
-        !simulateIsLogged ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={ROUTES.DASHBOARD} />
-        )
+        !auth ? <Component {...props} /> : <Redirect to={ROUTES.DASHBOARD} />
       }
     />
   );
 };
 
 const RouteProtected = ({ component: Component, ...rest }) => {
-  // const ctx = React.useContext(AuthApi);
+  const { auth } = useContext(AuthContext);
   return (
     <Route
       {...rest}
       render={(props) =>
-        simulateIsLogged ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={ROUTES.LOGIN} />
-        )
+        auth ? <Component {...props} /> : <Redirect to={ROUTES.LOGIN} />
       }
     />
   );

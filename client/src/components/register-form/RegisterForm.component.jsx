@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { register } from "../../utils/API";
-
+import AuthContext from "../../context/AuthContext";
 import Input from "../input";
 import Button from "../button";
 
 import "./RegisterForm.scss";
 
 const RegisterForm = () => {
+  const { setAuth } = useContext(AuthContext);
   const [formErrors, setFormErrors] = useState(null);
   const initialFormValues = {
     email: "",
@@ -18,8 +19,8 @@ const RegisterForm = () => {
     event.preventDefault();
     try {
       const result = await register(formValues);
-      if (result.status === 201) return console.log("success to register"); // TODO: Set logged
-      return setFormErrors(result.data);
+      if (result.status !== 201) return setFormErrors(result.data);
+      setAuth(true);
     } catch (err) {
       console.log(err);
     }

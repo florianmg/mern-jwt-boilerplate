@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState, useContext } from "react";
+import AuthContext from "../../context/AuthContext";
 import { login } from "../../utils/API";
 import Input from "../input";
 import Button from "../button";
@@ -7,6 +7,7 @@ import Button from "../button";
 import "./LoginForm.scss";
 
 const LoginForm = () => {
+  const { setAuth } = useContext(AuthContext);
   const [formErrors, setFormErrors] = useState(null);
   const initialFormValues = {
     email: "",
@@ -18,8 +19,8 @@ const LoginForm = () => {
     event.preventDefault();
     try {
       const result = await login(formValues);
-      if (result.status === 200) return console.log("success to connect"); // TODO: Set to logged
-      return setFormErrors(result.data);
+      if (result.status !== 200) return setFormErrors(result.data);
+      setAuth(true);
     } catch (err) {
       console.log(err);
     }

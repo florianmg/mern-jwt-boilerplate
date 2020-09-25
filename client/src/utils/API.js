@@ -34,14 +34,26 @@ export async function login(formValues) {
   }
 }
 
+/**
+ * Logout the user
+ * @returns {Promise<void>}
+ */
 export async function logout() {
   try {
     const result = await API.get("/logout");
+    console.log(result);
   } catch (e) {}
 }
 
+/**
+ * check if the user is authenticated
+ * @returns {Promise<{data: any, status: number}>}
+ */
 export async function isAuthenticated() {
   try {
     const result = await API.get("/authenticated");
-  } catch (e) {}
+    return { data: result.data, status: result.status };
+  } catch (err) {
+    return { data: err.response.data, status: err.response.status };
+  }
 }

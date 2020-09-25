@@ -15,11 +15,11 @@ const requireAuth = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.SECRET_JWT, (err, decodedToken) => {
       // token is not valid
-      if (err) res.redirect("/login");
+      if (err) return "User not logged";
       next();
     });
   } else {
-    res.redirect("/login");
+    return "User not logged";
   }
 };
 
@@ -39,10 +39,7 @@ const checkUser = (req, res, next) => {
         next();
       } else {
         let user = await User.findById(decodedToken.id);
-
-        // properties available in views
-        res.locals.user = user;
-        next();
+        return user;
       }
     });
   } else {
