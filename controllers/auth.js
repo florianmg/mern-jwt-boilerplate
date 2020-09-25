@@ -32,14 +32,16 @@ const handleErrors = (err) => {
 
   return errors;
 };
-const maxAge = 3 * 24 * 60 * 60; // 3days
+
 /**
  * Create jsonwebtoken for user when log in / signin
  * @param id (user id)
  * @returns
  */
 const createToken = (id) => {
-  return jwt.sign({ id }, "secret-string-to-hash-jwt", { expiresIn: maxAge });
+  return jwt.sign({ id }, process.env.SECRET_JWT, {
+    expiresIn: process.env.AGE_JWT,
+  });
 };
 
 module.exports.register = async (req, res) => {
@@ -52,7 +54,10 @@ module.exports.register = async (req, res) => {
     });
     const token = createToken(newUser._id);
 
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: process.env.AGE_COOKIE,
+    });
     res.status(201).json({ user: newUser._id });
   } catch (err) {
     const errors = handleErrors(err);
@@ -62,12 +67,12 @@ module.exports.register = async (req, res) => {
 
 module.exports.login = async (req, res) => {
   const { email, password } = req.body;
-
+  console.log("login");
   try {
     const user = await User.login(email, password);
     const token = createToken(user._id);
 
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.cookie("jwt", token, { httpOnly: true, maxAge: process.env.AGE_JWT });
     res.status(200).json({ user: user._id });
   } catch (err) {
     const errors = handleErrors(err);
