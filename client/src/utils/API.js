@@ -33,3 +33,15 @@ export async function login(formValues) {
     return { data: err.response.data, status: err.response.status };
   }
 }
+
+export async function logout() {
+  try {
+    const result = await API.get("/logout");
+  } catch (e) {}
+}
+
+export async function isAuthenticated() {
+  try {
+    const result = await API.get("/authenticated");
+  } catch (e) {}
+}
