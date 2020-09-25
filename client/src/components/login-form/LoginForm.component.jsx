@@ -1,24 +1,34 @@
 import React, { useState } from "react";
+
+import { login } from "../../utils/API";
 import Input from "../input";
 import Button from "../button";
 
 import "./LoginForm.scss";
 
 const LoginForm = () => {
+  const [formErrors, setFormErrors] = useState(null);
   const initialFormValues = {
     email: "",
     password: "",
   };
   const [formValues, setFormValues] = useState(initialFormValues);
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log("on login submit", formValues);
+    try {
+      const result = await login(formValues);
+      if (result.status === 200) return console.log("success to connect"); // TODO: Set to logged
+      return setFormErrors(result.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div>
       <form onSubmit={handleFormSubmit}>
+        {formErrors && <p>{formErrors.errors.email}</p>}
         <Input
           type="text"
           value={formValues.email}

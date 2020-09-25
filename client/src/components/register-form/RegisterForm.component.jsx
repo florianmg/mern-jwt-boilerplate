@@ -1,24 +1,34 @@
 import React, { useState } from "react";
+import { register } from "../../utils/API";
+
 import Input from "../input";
 import Button from "../button";
 
 import "./RegisterForm.scss";
 
 const RegisterForm = () => {
+  const [formErrors, setFormErrors] = useState(null);
   const initialFormValues = {
     email: "",
     password: "",
   };
   const [formValues, setFormValues] = useState(initialFormValues);
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log("on register submit", formValues);
+    try {
+      const result = await register(formValues);
+      if (result.status === 201) return console.log("success to register"); // TODO: Set logged
+      return setFormErrors(result.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div>
       <form onSubmit={handleFormSubmit}>
+        {formErrors && <p>{formErrors.errors.email}</p>}
         <Input
           type="text"
           value={formValues.email}
